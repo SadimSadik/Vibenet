@@ -2,48 +2,256 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>VibeNet - Feel the Vibe</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VibeNet - Your Social Vibes</title>
+  <style>
+    /* Reset & basic */
+    body {
+      background: #121212;
+      color: #eee;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      margin: 20px 0;
+      color: #4b4bff;
+    }
+    /* Container */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 10px 20px;
+    }
+    /* Post input area */
+    #postInput {
+      width: 100%;
+      padding: 12px;
+      font-size: 1.1em;
+      border-radius: 8px;
+      border: none;
+      background: #222;
+      color: #eee;
+      box-sizing: border-box;
+      resize: none;
+      min-height: 60px;
+    }
+    /* Post button */
+    #postBtn {
+      margin-top: 12px;
+      background: #4b4bff;
+      border: none;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background 0.3s ease;
+    }
+    #postBtn:hover {
+      background: #3535d9;
+    }
+    /* Posts container */
+    #postArea {
+      margin-top: 30px;
+    }
+    /* Single post style */
+    .post {
+      background: #1e1e1e;
+      padding: 15px 18px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px #4b4bff33;
+    }
+    .post p {
+      font-size: 1.05em;
+      margin: 0 0 10px 0;
+    }
+    /* Like button */
+    .likeBtn {
+      background: #ff4d4d;
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9em;
+      transition: background 0.3s ease;
+    }
+    .likeBtn:hover {
+      background: #e04343;
+    }
+    .likeBtn span {
+      margin-left: 6px;
+      font-weight: bold;
+    }
+    /* Comments */
+    .comments {
+      margin-top: 10px;
+      font-size: 0.9em;
+      color: #ccc;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+    .comments p {
+      margin: 6px 0;
+      padding-left: 10px;
+      border-left: 3px solid #4b4bff;
+    }
+    /* Comment input */
+    .commentInput {
+      margin-top: 10px;
+      padding: 8px;
+      width: 100%;
+      border-radius: 6px;
+      border: none;
+      background: #222;
+      color: #eee;
+      box-sizing: border-box;
+      font-size: 0.95em;
+    }
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      right: 10px;
+      top: 100px;
+      width: 250px;
+      background: #1a1a1a;
+      padding: 15px;
+      border-radius: 10px;
+      color: #ddd;
+      font-size: 0.9em;
+      max-height: 70vh;
+      overflow-y: auto;
+      box-shadow: 0 0 15px #4b4bff88;
+    }
+    .sidebar h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      color: #4b4bff;
+    }
+    .user-suggestion {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .user-suggestion img {
+      border-radius: 50%;
+      width: 50px;
+      margin-right: 10px;
+      border: 2px solid #4b4bff;
+    }
+    .user-suggestion button {
+      background: #4b4bff;
+      border: none;
+      color: white;
+      padding: 5px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8em;
+      transition: background 0.3s ease;
+    }
+    .user-suggestion button.following {
+      background: #777;
+    }
+    .user-suggestion div {
+      flex-grow: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    /* Responsive */
+    @media (max-width: 900px) {
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
 </head>
-<body class="bg-gray-900 text-white font-sans">
-  <div class="max-w-2xl mx-auto py-12 px-4">
-    <h1 class="text-4xl font-bold text-center mb-6 text-purple-400">🔥 VibeNet 🔥</h1>
+<body>
 
-    <div class="bg-gray-800 p-4 rounded-xl mb-6">
-      <label for="username" class="block mb-2 text-sm text-gray-300">Enter Your VibeName:</label>
-      <input id="username" type="text" class="w-full p-2 rounded bg-gray-700 text-white" placeholder="e.g. VibeKing123" />
-      <button onclick="enterVibe()" class="mt-4 w-full bg-purple-600 hover:bg-purple-700 p-2 rounded">Enter</button>
+  <h1>VibeNet</h1>
+
+  <div class="container">
+
+    <textarea id="postInput" placeholder="What's on your mind?"></textarea>
+    <button id="postBtn" onclick="postNow()">Post</button>
+
+    <div id="postArea"></div>
+
+  </div>
+
+  <div class="sidebar">
+    <h3>Suggested to Follow</h3>
+    <div class="user-suggestion">
+      <img src="https://i.pravatar.cc/50?img=3" alt="User1" />
+      <div>
+        <p><strong>Rafiq</strong></p>
+        <button onclick="toggleFollow(this)">Follow</button>
+      </div>
     </div>
-
-    <div id="feed" class="space-y-4 hidden">
-      <h2 class="text-2xl font-semibold text-pink-300">🔥 Trending Vibes</h2>
-
-      <div class="bg-gray-800 p-4 rounded">
-        <h3 class="font-bold">@TechFreak</h3>
-        <p class="text-gray-300 mt-2">“Just posted my first AI art! Vibe with me 🎨”</p>
+    <div class="user-suggestion">
+      <img src="https://i.pravatar.cc/50?img=5" alt="User2" />
+      <div>
+        <p><strong>Jannat</strong></p>
+        <button onclick="toggleFollow(this)">Follow</button>
       </div>
-
-      <div class="bg-gray-800 p-4 rounded">
-        <h3 class="font-bold">@ZaraVibes</h3>
-        <p class="text-gray-300 mt-2">“Throwback to Dhaka rooftops + tea ☕🌆”</p>
-      </div>
-
-      <div class="bg-gray-800 p-4 rounded">
-        <h3 class="font-bold">@CryptoKid</h3>
-        <p class="text-gray-300 mt-2">“My coin just doubled overnight 😭💸”</p>
+    </div>
+    <div class="user-suggestion">
+      <img src="https://i.pravatar.cc/50?img=7" alt="User3" />
+      <div>
+        <p><strong>Arif</strong></p>
+        <button onclick="toggleFollow(this)">Follow</button>
       </div>
     </div>
   </div>
 
   <script>
-    function enterVibe() {
-      const name = document.getElementById('username').value;
-      if (name.trim() !== "") {
-        document.getElementById('feed').classList.remove('hidden');
-        alert(`Welcome to the VibeZone, @${name}!`);
+    function postNow() {
+      const postText = document.getElementById('postInput').value;
+      if (postText.trim() !== "") {
+        const postDiv = document.createElement('div');
+        postDiv.className = 'post';
+        postDiv.innerHTML = `
+          <p>${postText}</p>
+          <button class="likeBtn" onclick="likePost(this)">❤️ Like <span>0</span></button>
+          <div class="comments"></div>
+          <input class="commentInput" type="text" placeholder="Write a comment..." onkeypress="handleComment(event, this)">
+        `;
+        document.getElementById('postArea').prepend(postDiv);
+        document.getElementById('postInput').value = "";
+      }
+    }
+
+    function likePost(button) {
+      let countSpan = button.querySelector('span');
+      let count = parseInt(countSpan.innerText);
+      countSpan.innerText = count + 1;
+    }
+
+    function handleComment(e, input) {
+      if (e.key === "Enter" && input.value.trim() !== "") {
+        const commentBox = input.previousElementSibling;
+        const comment = document.createElement("p");
+        comment.style.marginTop = "5px";
+        comment.style.fontSize = "0.9em";
+        comment.innerText = `💬 ${input.value}`;
+        commentBox.appendChild(comment);
+        input.value = "";
+      }
+    }
+
+    function toggleFollow(btn) {
+      if (btn.classList.contains('following')) {
+        btn.classList.remove('following');
+        btn.innerText = 'Follow';
+      } else {
+        btn.classList.add('following');
+        btn.innerText = 'Following';
       }
     }
   </script>
+
 </body>
 </html>
